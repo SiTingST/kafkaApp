@@ -47,7 +47,7 @@ public class kafkaStreamApp {
 
         KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
 
-        for (int i=0; i<=5; i++){
+        for (int i=0; i<5; i++){
             String advice = readFromHttp(url);
             ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC, "key", advice);
             producer.send(record);

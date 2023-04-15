@@ -22,7 +22,7 @@ public class kafkaStreamProcessor implements Processor<String, String, String, S
 //        String password = System.getenv("DB_PASSWORD");
 //        System.out.println("url is" + System.getenv("DB_URL"));
 
-        String url = "jdbc:mysql://localhost:3306/kafkaDatabase";
+        String url = "jdbc:mysql://localhost:3306/kafka_db";
         String user = "root";
         String password = "newrootpassword";
         try {
