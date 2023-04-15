@@ -17,10 +17,14 @@ public class kafkaStreamProcessor implements Processor<String, String, String, S
 
     private void addItemToDB(String content){
 
-        String url = System.getenv("DB_URL");
-        String user = System.getenv("DB_USER");
-        String password = System.getenv("DB_PASSWORD");
+//        String url = System.getenv("DB_URL");
+//        String user = System.getenv("DB_USER");
+//        String password = System.getenv("DB_PASSWORD");
+//        System.out.println("url is" + System.getenv("DB_URL"));
 
+        String url = "jdbc:mysql://localhost:3306/kafkaDatabase";
+        String user = "root";
+        String password = "newrootpassword";
         try {
             Connection connection = DriverManager.getConnection(url, user, password);
 
