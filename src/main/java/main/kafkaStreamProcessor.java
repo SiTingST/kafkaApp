@@ -1,24 +1,30 @@
-package org;
+
+package main;
 
 import org.apache.kafka.streams.processor.api.Processor;
 import org.apache.kafka.streams.processor.api.Record;
+import org.slf4j.Logger;
+
+import org.slf4j.LoggerFactory;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
-public class kafkaStreamProducer implements Processor<String, String, String, String> {
+public class kafkaStreamProcessor implements Processor<String, String, String, String> {
+    private static final Logger logger = LoggerFactory.getLogger(kafkaStreamProcessor.class);
 
-    public void addItemToDB(String content){
-        String url = "jdbc:mysql://localhost:3306/kafkaDatabase";
-        String user = "root";
-        String password = "newrootpassword";
+    private void addItemToDB(String content){
+
+        String url = System.getenv("DB_URL");
+        String user = System.getenv("DB_USER");
+        String password = System.getenv("DB_PASSWORD");
 
         try {
             Connection connection = DriverManager.getConnection(url, user, password);
 
-            String sqlStmt = "INSERT INTO kafkaContent (content) VALUES (?)";
+            String sqlStmt = "INSERT INTO adviceTable (advice) VALUES (?)";
 
             PreparedStatement statement = connection.prepareStatement(sqlStmt);
             statement.setString(1, content);
@@ -27,7 +33,6 @@ public class kafkaStreamProducer implements Processor<String, String, String, St
             if (noOfRowsInserted > 0) {
                 System.out.println("New content is added to db");
             }
-
             statement.close();
             connection.close();
         } catch (SQLException e) {
@@ -38,7 +43,6 @@ public class kafkaStreamProducer implements Processor<String, String, String, St
 
     @Override
     public void process(Record record) {
-        System.out.print("this is record value: " + record.value().toString());
         addItemToDB(record.value().toString());
     }
 }
