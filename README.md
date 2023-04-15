@@ -4,8 +4,8 @@ Created 1 Kafka producer to send messages to a stream of kafka  topology consist
 
 The message sent by kafka producer is from a GET request to https://api.adviceslip.com/advice running on multiple threads.
 
-Demo:
-(./demo_vid.mov)
+Download demo vid:
+https://github.com/SiTingST/kafkaApp/blob/main/demo_vid.mov
 
 1. Run `docker-compose -f docker-compose.yml up` to start docker kafka and zookeeper container 
 
