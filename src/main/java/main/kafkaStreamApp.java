@@ -28,7 +28,7 @@ public class kafkaStreamApp {
 
     private static final String url = "https://api.adviceslip.com/advice";
 
-    public static void main(String[] args) throws ExecutionException, InterruptedException {
+    public static void main(String[] args)  {
         Properties properties = new Properties();
         properties.put(StreamsConfig.APPLICATION_ID_CONFIG, "kafka-app");
         properties.put(StreamsConfig.BOOTSTRAP_SERVERS_CONFIG, "localhost:9092");
@@ -48,14 +48,18 @@ public class kafkaStreamApp {
         KafkaProducer<String, String> producer = new KafkaProducer<>(properties);
 
         for (int i=0; i<5; i++){
-            String advice = readFromHttp(url);
-            ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC, "key", advice);
-            producer.send(record);
+            readFromHttp(url)
+                    .thenApply(advice -> {
+                        ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC, "key", advice);
+                        System.out.println("record:" +  record);
+                        producer.send(record);
+                    return null;
+                    });
         }
         System.out.println("Kafka Streams application is running");
     }
 
-    private static String readFromHttp(String urlLink) throws ExecutionException, InterruptedException {
+    private static CompletableFuture<String> readFromHttp(String urlLink) {
         ExecutorService executor = Executors.newFixedThreadPool(5);
         StringBuilder stringBuilder = new StringBuilder();
 
@@ -82,6 +86,6 @@ public class kafkaStreamApp {
                 return null;
             }
         }, executor);
-        return httpResponse.get();
+        return httpResponse;
     }
 }
