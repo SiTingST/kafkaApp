@@ -56,6 +56,14 @@ public class kafkaStreamApp {
                     return null;
                     });
         }
+
+// task 2
+//        for (int i=0; i<100; i++) {
+//            ProducerRecord<String, String> record = new ProducerRecord<>(TOPIC, "key1", String.valueOf(random.nextInt(10)));
+//            ProducerRecord<String, String> record2 = new ProducerRecord<>(TOPIC, "key2", String.valueOf(random.nextInt(10)));
+//            producer.send(record);
+//            producer.send(record2);
+//        };
         System.out.println("Kafka Streams application is running");
     }
 
